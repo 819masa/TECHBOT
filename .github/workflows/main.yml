@@ -1,0 +1,42 @@
+# .github/workflows/main.yml
+
+name: Tech News Ranking Bot
+
+on:
+  # 1. スケジュール実行
+  schedule:
+    # 毎日 23:00 UTC に実行
+    # (JST 日本標準時では 翌朝 AM 8:00)
+    - cron: '0 23 * * *'
+  
+  # 2. 手動実行 (GitHubのActionsタブから手動で動かすため)
+  workflow_dispatch:
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest # 実行環境 (Linux)
+
+    steps:
+      # 1. リポジトリのコードをチェックアウト
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Python 3.11 をセットアップ
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 3. 必要なライブラリをインストール
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4. Pythonスクリプトを実行
+      - name: Run Python Script (TechNewsRanker)
+        env:
+          # GitHub SecretsからAPIキーを読み込む
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python main.py
