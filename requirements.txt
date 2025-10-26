@@ -1,0 +1,12 @@
+# .envファイル読み込み用
+python-dotenv
+
+# Slack Webhook, API呼び出し用
+requests
+
+# Gemini API用
+google-generativeai
+
+# RSSフィード解析用
+feedparser
+
