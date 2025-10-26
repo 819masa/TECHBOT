@@ -154,6 +154,10 @@ def _validate_analysis_payload(payload: dict[str, Any]) -> dict[str, Any]:
     return payload
 
 
+def _calculate_total_score(scores: dict[str, int]) -> int:
+    return int(scores.get("importance", 0)) + int(scores.get("interestingness", 0)) + int(scores.get("impact", 0))
+
+
 def analyze_article_with_gemini(
     article: dict[str, Any], *, model_name: str | None = None
 ) -> dict[str, Any]:
@@ -337,6 +341,7 @@ def main(args: argparse.Namespace) -> None:
         if gemini_enabled:
             try:
                 analysis = analyze_article_with_gemini(article)
+                total_score = _calculate_total_score(analysis.get("scores", {}))
                 result = {
                     "title": article["title"],
                     "url": article["url"],
@@ -345,6 +350,7 @@ def main(args: argparse.Namespace) -> None:
                     if hasattr(article["published_utc"], "isoformat")
                     else article["published_utc"],
                     "analysis": analysis,
+                    "total_score": total_score,
                 }
                 analysis_results.append(result)
                 print(json.dumps(result, ensure_ascii=False, indent=2))
@@ -352,6 +358,7 @@ def main(args: argparse.Namespace) -> None:
                 print(f"Gemini analysis failed: {err}")
 
     if analysis_results:
+        analysis_results.sort(key=lambda item: item.get("total_score", 0), reverse=True)
         print("Gemini analysis results (JSON array):")
         print(json.dumps(analysis_results, ensure_ascii=False, indent=2))
 
