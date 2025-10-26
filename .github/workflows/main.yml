@@ -39,4 +39,4 @@ jobs:
           # GitHub SecretsからAPIキーを読み込む
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python main.py
+        run: python main.py --send-slack --limit 5
