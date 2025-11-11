@@ -16,18 +16,15 @@ from dotenv import load_dotenv
 RSS_FEEDS = {
     # TechCrunch Japan (jp.techcrunch.com) の /feed/
     "TechCrunch Japan": "https://jp.techcrunch.com/feed/",     
-    
-    # WIRED Japan の /feed/
-    "WIRED Japan": "https://wired.jp/feed/", 
-    
-    # GIZMODO Japan は元から正しい
-    "GIZMODO Japan": "https://www.gizmodo.jp/feed.xml", 
 
     # Publickey の Atom フィード
     "Publickey": "https://www.publickey1.jp/atom.xml",
 
     # CodeZine の新着記事フィード
-    "CodeZine": "https://codezine.jp/rss/new",
+    "CodeZine": "https://codezine.jp/rss/new/index.xml",
+
+    # Gihyo Digital Publishing の RSS フィード
+    "Gihyo Digital Publishing": "https://gihyo.jp/dev/feed/rss2",
 }
 
 _ANNOUNCED_GEMINI_MODELS: set[str] = set()
