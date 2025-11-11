@@ -32,7 +32,37 @@ RSS_FEEDS = {
 
 _ANNOUNCED_GEMINI_MODELS: set[str] = set()
 
+_GADGET_KEYWORDS = [
+    "iphone",
+    "ipad",
+    "ipod",
+    "apple watch",
+    "macbook",
+    "airpods",
+    "pixel",
+    "galaxy",
+    "androidスマホ",
+    "スマートフォン",
+    "スマホ",
+    "ガジェット",
+    "デジカメ",
+    "家電",
+    "ヘッドフォン",
+    "イヤホン",
+    "セール",
+    "sale",
+    "割引",
+    "値下げ",
+    "タイムセール",
+    "amazon",
+    "楽天",
+]
+
 # --- Step 3: News Fetching ---
+
+def _is_gadget_news(*texts: str) -> bool:
+    haystack = " ".join(filter(None, texts)).lower()
+    return any(keyword in haystack for keyword in _GADGET_KEYWORDS)
 
 
 def get_recent_news() -> list[dict]:
@@ -72,12 +102,16 @@ def get_recent_news() -> list[dict]:
                 
                 # 3. JSTの「昨日AM8時」と比較
                 if published_time_utc > yesterday_8am:
+                    title = entry.title
+                    summary_text = getattr(entry, "summary", "")
+                    if _is_gadget_news(title, summary_text):
+                        continue
                     article = {
-                        "title": entry.title,
+                        "title": title,
                         "url": entry.link,
                         "published_utc": published_time_utc,  # (デバッグ用)
                         "source": source_name,
-                        "summary": getattr(entry, "summary", ""),
+                        "summary": summary_text,
                     }
                     recent_articles.append(article)
                     
