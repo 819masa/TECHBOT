@@ -25,6 +25,9 @@ RSS_FEEDS = {
 
     # Gihyo Digital Publishing の RSS フィード
     "Gihyo Digital Publishing": "https://gihyo.jp/dev/feed/rss2",
+
+    # ITmedia News の RSS フィー
+    "ITmedia News": "https://rss.itmedia.co.jp/rss/2.0/news_bursts.xml"
 }
 
 _ANNOUNCED_GEMINI_MODELS: set[str] = set()
