@@ -2,6 +2,7 @@
 
 name: Tech News Ranking Bot
 
+
 on:
   # 1. スケジュール実行
   schedule:
